@@ -96,18 +96,18 @@ class Table extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  cells: state.move.cells,
-  move: state.move.move,
-  indexX: state.setIndex.indexX,
-  indexO: state.setIndex.indexO,
-  moveInfo: state.move.info,
-  count: state.move.count,
+  cells: state.cells,
+  move: state.move,
+  indexX: state.indexX,
+  indexO: state.indexO,
+  moveInfo: state.info,
+  count: state.count,
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    whoMove(cells, move, count) {
-      dispatch({ type: 'MOVE', payload: { cells, move, count } })
+    whoMove(cells, move, count, info) {
+      dispatch({ type: 'MOVE', payload: { cells, move, count, info } })
     },
     info(info) {
       dispatch({ type: 'INFO', payload: info })

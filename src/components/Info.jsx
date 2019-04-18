@@ -5,7 +5,7 @@ const Info = ({ info }) => <h1 className="info">{info}</h1>
 
 
 const mapStateToProps = state => ({
-  info: state.move.info,
+  info: state.info,
 })
 
 export default connect(mapStateToProps)(Info)
