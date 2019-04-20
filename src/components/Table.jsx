@@ -5,48 +5,35 @@ class Table extends React.Component {
   constructor(props) {
     super(props)
 
+    this.xIndex = []
+    this.oIndex = []
+
     this.handleMove = this.handleMove.bind(this)
     this.win = this.win.bind(this);
   }
 
   handleMove(index) {
-    const { whoMove, move, indexX, indexO, cells,
-      addIndexX, addIndexO, info, moveInfo, count } = this.props;
+    const { whoMove, cells, winner, count } = this.props;
 
     let copyCells = [...cells];
-    let copyIndexX = [...indexX];
-    let copyIndexO = [...indexO];
 
-    if (copyCells[index] !== null
-      || moveInfo === 'Победил: X'
-      || moveInfo === 'Победил: O'
-    ) {
+    if (copyCells[index] !== null || winner) {
       return;
     }
 
-    let element = ''
-    let infoAboutMove = ''
-
-    if (move === 'X') {
+    if (count % 2 === 0) {
       copyCells[index] = 'X'
-      element = 'O'
-      copyIndexX = [...copyIndexX, index]
-      infoAboutMove = 'Ход: О'
-      addIndexX(copyIndexX)
+      this.xIndex.push(index)
 
-    } else if (move === 'O') {
+    } else if (count % 2 === 1) {
       copyCells[index] = 'O'
-      element = 'X'
-      copyIndexO = [...copyIndexO, index]
-      infoAboutMove = 'Ход: X'
-      addIndexO(copyIndexO)
+      this.oIndex.push(index)
     }
 
     let counter = count + 1
 
-    whoMove(copyCells, element, counter)
-    info(infoAboutMove)
-    this.win(copyIndexX, copyIndexO)
+    whoMove(copyCells, counter)
+    this.win(this.xIndex, this.oIndex)
   }
 
   win(x, o) {
@@ -61,17 +48,17 @@ class Table extends React.Component {
       [2, 4, 6]
     ]
 
+    const { isWinner } = this.props
+
     for (let win of winComination) {
-      const { info } = this.props
       if (win.every(winner => x.includes(winner))) {
-        info('Победил: X')
-        return;
+        isWinner()
 
       } else if (win.every(winner => o.includes(winner))) {
-        info('Победил: O')
+        isWinner()
 
       } else if (this.props.count === 8) {
-        info('Ничья')
+        isWinner('draw')
       }
     }
   }
@@ -95,28 +82,16 @@ class Table extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  cells: state.cells,
-  move: state.move,
-  indexX: state.indexX,
-  indexO: state.indexO,
-  moveInfo: state.info,
-  count: state.count,
-})
+const mapStateToProps = ({ cells, count, isWinner }) =>
+  ({ cells, count, winner: isWinner })
 
 const mapDispatchToProps = dispatch => {
   return {
-    whoMove(cells, move, count, info) {
-      dispatch({ type: 'MOVE', payload: { cells, move, count, info } })
+    whoMove(cells, count) {
+      dispatch({ type: 'MOVE', payload: { cells, count } })
     },
-    info(info) {
-      dispatch({ type: 'INFO', payload: info })
-    },
-    addIndexX(arr) {
-      dispatch({ type: 'ADD_INDEX_X', payload: arr })
-    },
-    addIndexO(arr) {
-      dispatch({ type: 'ADD_INDEX_O', payload: arr })
+    isWinner(result = true) {
+      dispatch({ type: 'WINNER', payload: result })
     }
   }
 }
