@@ -5,8 +5,10 @@ const Info = ({ count, winner }) => {
   let gameResult = ''
   if (winner === 'draw') {
     gameResult = 'Ничья'
+
   } else if (winner) {
     gameResult = `Победил: ${count % 2 === 0 ? 'O' : 'X'}`
+
   }
   else if (!winner) {
     gameResult = `Ход: ${count % 2 === 0 ? 'X' : 'O'}`

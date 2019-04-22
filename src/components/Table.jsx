@@ -10,6 +10,7 @@ class Table extends React.Component {
 
     this.handleMove = this.handleMove.bind(this)
     this.win = this.win.bind(this);
+    this.clearIndex = this.clearIndex.bind(this)
   }
 
   handleMove(index) {
@@ -53,14 +54,22 @@ class Table extends React.Component {
     for (let win of winComination) {
       if (win.every(winner => x.includes(winner))) {
         isWinner()
+        this.clearIndex()
 
       } else if (win.every(winner => o.includes(winner))) {
         isWinner()
+        this.clearIndex()
 
       } else if (this.props.count === 8) {
         isWinner('draw')
+        this.clearIndex()
       }
     }
+  }
+
+  clearIndex() {
+    this.xIndex = []
+    this.oIndex = []
   }
 
   render() {

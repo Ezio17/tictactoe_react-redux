@@ -1,13 +1,13 @@
 {
   "main.css": "/tictactoe_react-redux/build/static/css/main.eeb179dc.chunk.css",
-  "main.js": "/tictactoe_react-redux/build/static/js/main.b045a70a.chunk.js",
-  "main.js.map": "/tictactoe_react-redux/build/static/js/main.b045a70a.chunk.js.map",
+  "main.js": "/tictactoe_react-redux/build/static/js/main.6371c316.chunk.js",
+  "main.js.map": "/tictactoe_react-redux/build/static/js/main.6371c316.chunk.js.map",
   "runtime~main.js": "/tictactoe_react-redux/build/static/js/runtime~main.d42e2648.js",
   "runtime~main.js.map": "/tictactoe_react-redux/build/static/js/runtime~main.d42e2648.js.map",
   "static/js/2.ac7578dc.chunk.js": "/tictactoe_react-redux/build/static/js/2.ac7578dc.chunk.js",
   "static/js/2.ac7578dc.chunk.js.map": "/tictactoe_react-redux/build/static/js/2.ac7578dc.chunk.js.map",
   "index.html": "/tictactoe_react-redux/build/index.html",
-  "precache-manifest.5bf3690f4ad927d8e7c56a3c38ac1146.js": "/tictactoe_react-redux/build/precache-manifest.5bf3690f4ad927d8e7c56a3c38ac1146.js",
+  "precache-manifest.c58bf8ed5314700a114902d0c782e54e.js": "/tictactoe_react-redux/build/precache-manifest.c58bf8ed5314700a114902d0c782e54e.js",
   "service-worker.js": "/tictactoe_react-redux/build/service-worker.js",
   "static/css/main.eeb179dc.chunk.css.map": "/tictactoe_react-redux/build/static/css/main.eeb179dc.chunk.css.map"
 }
