@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "6966e1064686a8449865",
+    "revision": "2d01e4c80e0e03026835",
     "url": "/tictactoe_react-redux/build/static/css/main.eeb179dc.chunk.css"
   },
   {
-    "revision": "6966e1064686a8449865",
-    "url": "/tictactoe_react-redux/build/static/js/main.6371c316.chunk.js"
+    "revision": "2d01e4c80e0e03026835",
+    "url": "/tictactoe_react-redux/build/static/js/main.b113a296.chunk.js"
   },
   {
     "revision": "958bc1b4356aebc1495f",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/tictactoe_react-redux/build/static/js/2.ac7578dc.chunk.js"
   },
   {
-    "revision": "941f9a03e50aed5aa79889661417aadc",
+    "revision": "c89bd7cac0dc82684abdd1c24f943b6d",
     "url": "/tictactoe_react-redux/build/index.html"
   }
 ];
