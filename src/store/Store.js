@@ -1,11 +1,13 @@
-import { createStore } from 'redux'
-import { restartGame } from './reducerLogic'
+import { createStore } from 'redux';
+import { restartGame } from './reducerLogic';
 
 const game = {
   cells: Array(9).fill(null),
   count: 0,
   isWinner: false,
-}
+  xIndex: [],
+  oIndex: [],
+};
 
 const rootReducer = (state = game, action) => {
   switch (action.type) {
@@ -15,22 +17,34 @@ const rootReducer = (state = game, action) => {
         ...state,
         cells,
         count,
-      }
+      };
 
     case 'RESTART_GAME':
-      return state = restartGame
+      return (state = restartGame);
 
     case 'WINNER':
       return {
         ...state,
-        isWinner: action.payload
-      }
+        isWinner: action.payload,
+      };
+
+    case 'ADD_X':
+      return {
+        ...state,
+        xIndex: [...state.xIndex, action.payload],
+      };
+
+    case 'ADD_O':
+      return {
+        ...state,
+        oIndex: [...state.oIndex, action.payload],
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-const configureStore = () => createStore(rootReducer)
+const configureStore = () => createStore(rootReducer);
 
 export default configureStore;

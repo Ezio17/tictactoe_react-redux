@@ -5,16 +5,12 @@ class Table extends React.Component {
   constructor(props) {
     super(props);
 
-    this.xIndex = [];
-    this.oIndex = [];
-
     this.handleMove = this.handleMove.bind(this);
     this.win = this.win.bind(this);
-    this.clearIndex = this.clearIndex.bind(this);
   }
 
   handleMove(index) {
-    const { whoMove, cells, winner, count } = this.props;
+    const { whoMove, cells, winner, count, setOIndex, setXIndex } = this.props;
 
     let copyCells = [...cells];
 
@@ -24,19 +20,24 @@ class Table extends React.Component {
 
     if (count % 2 === 0) {
       copyCells[index] = 'X';
-      this.xIndex.push(index);
+      setXIndex(index);
     } else if (count % 2 === 1) {
       copyCells[index] = 'O';
-      this.oIndex.push(index);
+      setOIndex(index);
     }
 
     let counter = count + 1;
 
     whoMove(copyCells, counter);
-    this.win(this.xIndex, this.oIndex);
   }
 
-  win(x, o) {
+  componentDidUpdate() {
+    this.win();
+  }
+
+  win() {
+    const { xIndex, oIndex } = this.props;
+
     const winComination = [
       [0, 1, 2],
       [3, 4, 5],
@@ -49,26 +50,18 @@ class Table extends React.Component {
     ];
 
     const { isWinner } = this.props;
-    console.log(this.props.count);
 
     for (let win of winComination) {
-      if (win.every(winner => x.includes(winner))) {
+      if (win.every(winner => xIndex.includes(winner))) {
         isWinner();
-        this.clearIndex();
         return;
-      } else if (win.every(winner => o.includes(winner))) {
+      } else if (win.every(winner => oIndex.includes(winner))) {
         isWinner();
-        this.clearIndex();
-      } else if (this.props.count === 8 && !win.every(winner => x.includes(winner))) {
+        return;
+      } else if (this.props.count === 9 && !win.every(winner => xIndex.includes(winner))) {
         isWinner('draw');
-        this.clearIndex();
       }
     }
-  }
-
-  clearIndex() {
-    this.xIndex = [];
-    this.oIndex = [];
   }
 
   render() {
@@ -90,7 +83,13 @@ class Table extends React.Component {
   }
 }
 
-const mapStateToProps = ({ cells, count, isWinner }) => ({ cells, count, winner: isWinner });
+const mapStateToProps = ({ cells, count, isWinner, xIndex, oIndex }) => ({
+  cells,
+  count,
+  winner: isWinner,
+  xIndex,
+  oIndex,
+});
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -99,6 +98,12 @@ const mapDispatchToProps = dispatch => {
     },
     isWinner(result = true) {
       dispatch({ type: 'WINNER', payload: result });
+    },
+    setXIndex(index) {
+      dispatch({ type: 'ADD_X', payload: index });
+    },
+    setOIndex(index) {
+      dispatch({ type: 'ADD_O', payload: index });
     },
   };
 };
