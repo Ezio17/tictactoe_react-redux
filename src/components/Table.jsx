@@ -1,55 +1,43 @@
-import React from 'react'
+import React from 'react';
 import { connect } from 'react-redux';
 
 class Table extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.handleMove = this.handleMove.bind(this)
+    this.handleMove = this.handleMove.bind(this);
     this.win = this.win.bind(this);
   }
 
   handleMove(index) {
-    const { whoMove, move, indexX, indexO, cells,
-      addIndexX, addIndexO, info, moveInfo, count } = this.props;
+    const { whoMove, cells, winner, count, setOIndex, setXIndex } = this.props;
 
     let copyCells = [...cells];
-    let copyIndexX = [...indexX];
-    let copyIndexO = [...indexO];
 
-    if (copyCells[index] !== null
-      || moveInfo === 'Победил: X'
-      || moveInfo === 'Победил: O'
-    ) {
+    if (copyCells[index] !== null || winner) {
       return;
     }
 
-    let element = ''
-    let infoAboutMove = ''
-
-    if (move === 'X') {
-      copyCells[index] = 'X'
-      element = 'O'
-      copyIndexX = [...copyIndexX, index]
-      infoAboutMove = 'Ход: О'
-      addIndexX(copyIndexX)
-
-    } else if (move === 'O') {
-      copyCells[index] = 'O'
-      element = 'X'
-      copyIndexO = [...copyIndexO, index]
-      infoAboutMove = 'Ход: X'
-      addIndexO(copyIndexO)
+    if (count % 2 === 0) {
+      copyCells[index] = 'X';
+      setXIndex(index);
+    } else if (count % 2 === 1) {
+      copyCells[index] = 'O';
+      setOIndex(index);
     }
 
-    let counter = count + 1
+    let counter = count + 1;
 
-    whoMove(copyCells, element, counter)
-    info(infoAboutMove)
-    this.win(copyIndexX, copyIndexO)
+    whoMove(copyCells, counter);
   }
 
-  win(x, o) {
+  componentDidUpdate() {
+    this.win();
+  }
+
+  win() {
+    const { xIndex, oIndex } = this.props;
+
     const winComination = [
       [0, 1, 2],
       [3, 4, 5],
@@ -58,26 +46,26 @@ class Table extends React.Component {
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]
-    ]
+      [2, 4, 6],
+    ];
+
+    const { isWinner } = this.props;
 
     for (let win of winComination) {
-      const { info } = this.props
-      if (win.every(winner => x.includes(winner))) {
-        info('Победил: X')
+      if (win.every(winner => xIndex.includes(winner))) {
+        isWinner();
         return;
-
-      } else if (win.every(winner => o.includes(winner))) {
-        info('Победил: O')
-
-      } else if (this.props.count === 8) {
-        info('Ничья')
+      } else if (win.every(winner => oIndex.includes(winner))) {
+        isWinner();
+        return;
+      } else if (this.props.count === 9 && !win.every(winner => xIndex.includes(winner))) {
+        isWinner('draw');
       }
     }
   }
 
   render() {
-    const { cells } = this.props
+    const { cells } = this.props;
     return (
       <div className="table">
         {cells.map((item, index) => (
@@ -91,34 +79,36 @@ class Table extends React.Component {
           </div>
         ))}
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
-  cells: state.move.cells,
-  move: state.move.move,
-  indexX: state.setIndex.indexX,
-  indexO: state.setIndex.indexO,
-  moveInfo: state.move.info,
-  count: state.move.count,
-})
+const mapStateToProps = ({ cells, count, isWinner, xIndex, oIndex }) => ({
+  cells,
+  count,
+  winner: isWinner,
+  xIndex,
+  oIndex,
+});
 
 const mapDispatchToProps = dispatch => {
   return {
-    whoMove(cells, move, count) {
-      dispatch({ type: 'MOVE', payload: { cells, move, count } })
+    whoMove(cells, count) {
+      dispatch({ type: 'MOVE', payload: { cells, count } });
     },
-    info(info) {
-      dispatch({ type: 'INFO', payload: info })
+    isWinner(result = true) {
+      dispatch({ type: 'WINNER', payload: result });
     },
-    addIndexX(arr) {
-      dispatch({ type: 'ADD_INDEX_X', payload: arr })
+    setXIndex(index) {
+      dispatch({ type: 'ADD_X', payload: index });
     },
-    addIndexO(arr) {
-      dispatch({ type: 'ADD_INDEX_O', payload: arr })
-    }
-  }
-}
+    setOIndex(index) {
+      dispatch({ type: 'ADD_O', payload: index });
+    },
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Table)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Table);

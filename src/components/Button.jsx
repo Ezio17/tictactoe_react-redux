@@ -9,20 +9,7 @@ class Button extends React.Component {
   }
 
   handleClear() {
-    const { whoMove, addIndexX, addIndexO, info } = this.props
-    const cells = Array(9).fill(null);
-    const move = 'X';
-    const infoAboutMove = 'Ход: X'
-    const counter = 0;
-
-    whoMove(cells, move, counter)
-    info(infoAboutMove)
-
-    const indexX = [];
-    const indexO = [];
-
-    addIndexX(indexX)
-    addIndexO(indexO)
+    this.props.restart()
   }
 
   render() {
@@ -33,23 +20,13 @@ class Button extends React.Component {
       >Restart Game</button>
     )
   }
-
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    whoMove(cells, move, count) {
-      dispatch({ type: 'MOVE', payload: { cells, move, count } })
+    restart() {
+      dispatch({ type: 'RESTART_GAME' })
     },
-    info(info) {
-      dispatch({ type: 'INFO', payload: info })
-    },
-    addIndexX(arr) {
-      dispatch({ type: 'ADD_INDEX_X', payload: arr })
-    },
-    addIndexO(arr) {
-      dispatch({ type: 'ADD_INDEX_O', payload: arr })
-    }
   }
 }
 
